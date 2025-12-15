@@ -1,5 +1,6 @@
 // Configuration
 const API_URL = 'https://4b04ae88d460.ngrok-free.app/generate-job-tale';
+const API_TIMEOUT_MS = 90 * 60 * 1000; // 90 minutes timeout (1.5 hours)
 
 // State Management
 const state = {
@@ -86,15 +87,27 @@ async function sendToAPI(storyIdea) {
     try {
         state.isLoading = true;
         
+        // Create AbortController with timeout
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), API_TIMEOUT_MS);
+        
         const response = await fetch(API_URL, {
             method: 'POST',
+            mode: 'cors',
+            credentials: 'omit',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'ngrok-skip-browser-warning': 'true', // Skip ngrok browser warning
             },
             body: JSON.stringify({
                 free_text_story_idea: storyIdea
-            })
+            }),
+            signal: controller.signal
         });
+        
+        // Clear timeout if request completes
+        clearTimeout(timeoutId);
         
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
@@ -105,6 +118,18 @@ async function sendToAPI(storyIdea) {
         return data;
         
     } catch (error) {
+        if (error.name === 'AbortError') {
+            const timeoutMinutes = API_TIMEOUT_MS / (60 * 1000);
+            console.error(`Request timeout after ${timeoutMinutes} minutes`);
+            throw new Error(`Request timed out after ${timeoutMinutes} minutes. The generation is taking longer than expected.`);
+        }
+        
+        // Better error handling for network errors
+        if (error.message.includes('Failed to fetch') || error.name === 'TypeError') {
+            console.error('Network Error:', error);
+            throw new Error('Connection lost to server. Please check your internet connection and try again.');
+        }
+        
         console.error('API Error:', error);
         throw error;
     } finally {
