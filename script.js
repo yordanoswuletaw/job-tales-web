@@ -1,5 +1,5 @@
 // Configuration
-const API_URL = 'https://4b04ae88d460.ngrok-free.app/generate-job-tale';
+const API_URL = 'https://jobtales-4hq1do2e.b4a.run/generate-job-tale';
 const API_TIMEOUT_MS = 90 * 60 * 1000; // 90 minutes timeout (1.5 hours)
 
 // State Management
