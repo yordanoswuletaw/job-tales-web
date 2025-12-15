@@ -1,11 +1,7 @@
-// ===================================
 // Configuration
-// ===================================
 const API_URL = 'https://4b04ae88d460.ngrok-free.app/generate-job-tale';
 
-// ===================================
 // State Management
-// ===================================
 const state = {
     currentStoryIdea: '',
     clarificationQuestions: [],
@@ -16,9 +12,7 @@ const state = {
     generationTime: 0 // Store final generation time in seconds
 };
 
-// ===================================
 // DOM Elements
-// ===================================
 const elements = {
     // Sections
     storyInputSection: document.getElementById('story-input-section'),
@@ -50,9 +44,7 @@ const elements = {
     copyToast: document.getElementById('copy-toast')
 };
 
-// ===================================
 // Section Navigation
-// ===================================
 function showSection(sectionToShow) {
     // Hide all sections
     [elements.storyInputSection, elements.clarificationSection, 
