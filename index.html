@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Tales - Transform Your Career Stories</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Marked.js for Markdown rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                    <path d="M2 17l10 5 10-5"/>
+                    <path d="M2 12l10 5 10-5"/>
+                </svg>
+                <h1>Job Tales</h1>
+            </div>
+            <p class="tagline">Transform career data into compelling narratives</p>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Initial Story Idea Form -->
+            <div id="story-input-section" class="section active">
+                <div class="card">
+                    <h2>✨ Share Your Story Idea</h2>
+                    <p class="description">
+                        Tell us what kind of career story you'd like to explore. Be as creative or specific as you want!
+                    </p>
+                    
+                    <form id="story-form">
+                        <div class="form-group">
+                            <label for="story-idea">Story Idea</label>
+                            <textarea 
+                                id="story-idea" 
+                                name="story-idea" 
+                                rows="6" 
+                                placeholder="Example: Tell me about software engineers who transitioned from finance to tech startups in Paris..."
+                                required
+                            ></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary" id="submit-story-btn">
+                            <span class="btn-text">Generate Job Tale</span>
+                            <span class="btn-loader" style="display: none;">
+                                <span class="spinner"></span>
+                                Generating...
+                            </span>
+                        </button>
+                        
+                        <div class="timer-display" id="timer-1" style="display: none;">
+                            <svg class="timer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                            <span class="timer-text">Elapsed: <span class="timer-value">0.0s</span></span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Clarification Questions Section -->
+            <div id="clarification-section" class="section" style="display: none;">
+                <div class="card">
+                    <h2>🤔 A Few Questions First</h2>
+                    <p class="description">
+                        To create the perfect tale, we need a bit more detail:
+                    </p>
+                    
+                    <form id="clarification-form">
+                        <div id="questions-container"></div>
+                        
+                        <div class="button-group">
+                            <button type="button" class="btn btn-secondary" id="back-btn">
+                                ← Start Over
+                            </button>
+                            <button type="submit" class="btn btn-primary" id="submit-answers-btn">
+                                <span class="btn-text">Submit Answers</span>
+                                <span class="btn-loader" style="display: none;">
+                                    <span class="spinner"></span>
+                                    Processing...
+                                </span>
+                            </button>
+                        </div>
+                        <div class="timer-display" id="timer-2" style="display: none;">
+                            <svg class="timer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                            <span class="timer-text">Elapsed: <span class="timer-value">0.0s</span></span>
+                        </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Job Tale Result Section -->
+            <div id="result-section" class="section" style="display: none;">
+                <div class="card result-card">
+                    <div class="result-header">
+                        <h2>📖 Your Job Tale</h2>
+                        <button class="btn btn-secondary btn-sm" id="new-story-btn">
+                            Create Another Tale
+                        </button>
+                    </div>
+                    
+                    <div id="tale-content" class="tale-content"></div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="tale-actions">
+                        <button class="btn btn-action" id="copy-btn">
+                            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                            Copy Story
+                        </button>
+                        <button class="btn btn-action" id="download-md-btn">
+                            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            Download Markdown
+                        </button>
+                        <button class="btn btn-action" id="download-txt-btn">
+                            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="12" y1="18" x2="12" y2="12"></line>
+                                <line x1="9" y1="15" x2="15" y2="15"></line>
+                            </svg>
+                            Download Text
+                        </button>
+                    </div>
+                    
+                    <!-- Copy Success Toast -->
+                    <div id="copy-toast" class="copy-toast">
+                        ✓ Copied to clipboard!
+                    </div>
+                </div>
+            </div>
+
+            <!-- Error Section -->
+            <div id="error-section" class="section" style="display: none;">
+                <div class="card error-card">
+                    <h2>⚠️ Oops!</h2>
+                    <p class="error-message" id="error-message"></p>
+                    <button class="btn btn-primary" id="retry-btn">
+                        Try Again
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Made with 🤍 for career storytelling</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
